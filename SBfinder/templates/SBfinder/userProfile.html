@@ -1,0 +1,14 @@
+{% extends "SBfinder/base.html" %}
+
+{% block content %}
+
+<body>
+    <h1 class="pt-2 text-center text-capitalize font-weight-bold">{{ userInfo.user_name }} Profile </h1>
+    {% for class in userInfo.course_set.all %}
+        <li><strong> {{ class }} </strong></li>
+
+    {% endfor %}
+
+</body>
+
+{% endblock %}
