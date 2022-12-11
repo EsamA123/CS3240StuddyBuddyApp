@@ -1,0 +1,52 @@
+{% extends "SBfinder/base.html" %}
+{% load SBfinder_extra %}
+
+{% block content %}
+
+<body>
+
+{% include 'SBfinder/messages.html' %}
+
+  <div class = "container">
+    <div class = "h1 d-flex justify-content-center">Propose a Study Session:</div>
+
+    <div class="d-flex align-items-center justify-content-center">
+    <form action="{% url 'SBfinder:create_SS'%}" method="post">
+        {% csrf_token %}
+        <div class ="mb-3">
+
+            <label for="SS_title" class = "form-label">title:</label>
+            <textarea class="form-control" id = "SS_title" name = "study_session_title" rows="1"></textarea>
+
+            <label for="SS_description" class = "form-label">Description:</label>
+            <textarea class="form-control" id = "SS_description" name = "study_session_description" rows="4"></textarea>
+
+            <label for="study_session_date">Start date:</label>
+            <input type="date" id="study_session_date" name="study_session_date">
+
+            <label for="study_session_time">Choose a time for your meeting:</label>
+            <input type="time" id="study_session_time" name="study_session_time"
+            min="00:00" max="23:59" required>
+
+            <div>
+             <label class="form-check-label" for="flexSwitchCheckDefault">Who do you want to send this proposal to: </label>
+
+            {% for friend in userInfo.friends.all %}
+                <div>
+                    {{ friend.user_name }}
+                     <div class="form-check form-switch">
+                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name = "study_session_checks" value = "{{ friend.pk }}">
+                     </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </div>
+    </form>
+    </div>
+
+  </div>
+
+</body>
+{% endblock %}

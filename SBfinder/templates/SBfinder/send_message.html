@@ -1,0 +1,107 @@
+{% extends "SBfinder/base.html" %}
+{% load SBfinder_extra %}
+{% block content %}
+<style>
+    .container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #aaa;
+}
+
+.message-right {
+  float: right;
+}
+
+.message-left {
+  float: left;
+}
+
+
+.nounderline_white {
+            text-decoration: none;
+            color: white;
+        }
+
+</style>
+<body>
+
+{% include 'SBfinder/messages.html' %}
+    <div class = "text-center">
+        <h2>Message Log Between You And {{other_user.user_name}}</h2>
+    </div>
+
+{% for message in message_model %}
+    <div class = "container">
+        {% if message.to_user == other_user %}
+            <p style="font-size:14px; color:#538b01; font-weight:bold; font-style:italic;">
+            From
+            <span style="color: #ff0000">{{message.from_user.user_name}}</span>
+            to
+            <span style="color: #0000a0">{{message.to_user.user_name }}</span>
+            </p>
+
+          <p>{{ message.message_body }}</p>
+          <span class="time-right">{{ message.time }}</span>
+
+        {% else %}
+          <p style="font-size:14px; color:#538b01; font-weight:bold; font-style:italic;">
+              From
+              <span style="color: #ff0000">{{message.from_user.user_name}}</span>
+            to
+        <span style="color: #0000a0">{{message.to_user.user_name }}</span>
+        </p>
+
+          <p>{{ message.message_body }}</p>
+          <span class="time-left">{{ message.time }}</span>
+        {% endif %}
+
+    </div>
+{% endfor %}
+
+     <div class = "text-center">
+         <div class = "pt-4" style = "background-color: #026670;">
+         <form action="{% url 'SBfinder:generate_message' other_user.id %}" method="post">
+            {% csrf_token %}
+
+                <textarea class="form-control" id = "message_body" name = "message_body" placeholder="Your message goes here..." rows="3"></textarea>
+
+                <input type="submit" value="Send" class="btn btn-primary">
+
+                <button type="button" class="btn btn-primary">
+                    <a href=" {% url 'SBfinder:message_log' other_user.id%} " class = "nounderline_white">Update</a>
+                </button>
+        </form>
+         </div>
+     </div>
+
+
+
+</body>
+
+
+
+{% endblock %}

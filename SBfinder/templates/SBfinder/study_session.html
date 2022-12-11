@@ -1,0 +1,44 @@
+{% extends "SBfinder/base.html" %}
+{% load SBfinder_extra %}
+
+{% block content %}
+
+
+<body>
+
+{% include 'SBfinder/messages.html' %}
+
+<br><h1 class="pt-2 text-center font-weight-bold">Pending Study Session Proposal </h1><br>
+
+{% for SS in study_session_request %}
+{% if SS.to_user == user|getcurrentUser %}
+<div class="card mx-auto" style="width: 400px;">
+     <div class="h4 card-header">
+         <strong class = "left">{{ SS.study_session.title }}</strong>
+     </div>
+    <div class="card-body text-center">
+            <blockquote class="blockquote mb-0">
+                            Date: {{ SS.study_session.date }} <br>
+                            Time: {{ SS.study_session.time }} <br>
+                            Description: <br>
+                            {{ SS.study_session.description }} <br>
+                            People who have consented: <br>
+                            {% for people in SS.study_session.users.all %}
+                                <ul>
+                                    <li>{{ people.user_name }} </li>
+                                </ul>
+                            {% endfor %}
+            </blockquote>
+            <button type="button" class="pt-1 mt-2 btn">
+                <a href="/sbfinder/accept_SS_request/{{ SS.pk }}/" class="nounderline">Accept</a>
+            </button>
+    </div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+</body>
+
+
+{% endblock %}
