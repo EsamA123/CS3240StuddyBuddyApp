@@ -1,0 +1,46 @@
+{% extends "SBfinder/base.html" %}
+
+{% block content %}
+
+        <div class = "container"><br>
+          <u><h1 class = "text-center">Search for your class </h1><br></u>
+          <form class = "text-center" method="GET">
+            <input type = "text" name = "subjSearch" placeholder="APMA, CS, etc ..." class = "text-center">
+            <input type = "text" name = "numSearch" placeholder="1010, 3240, etc ..." class = "text-center">
+            <button type = "submit">SEARCH CLASS</button>
+          </form>
+        </div>
+
+    <h2 class = "ps-4">List of classes</h2>
+    <div class="mx-auto" style="width: 1200px;">
+    {% if test %}
+    {% for i in test %}
+      <form action="{% url 'SBfinder:add_to_schedule'%}" method="post">
+          {% csrf_token %}
+
+      <div class="card left-align bg-light">
+        <div class="h4 card-header">
+            <strong>{{ i.subject }} {{ i.catalog_number }}: {{ i.description }}</strong>
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                Instructor: {{ i.instructor.name }} <br>
+                Section: {{ i.course_section }}-{{ i.component }} <br>
+                Class Number: {{ i.course_number }}</br>
+
+                <!-- I used a hidden input type to input the entire context variable through POST, and process it using json.loads() -->
+                <input type = "hidden" id="class" name="class" value = "{{ i }}">
+                <input type = "submit" value = "Add to Your Schedule" class="pt-1 mt-2 btn btn-secondary">
+            </blockquote>
+        </div>
+      </div>
+      </form>
+
+    <br>
+    {% endfor %}
+  </div>
+    {% else %}
+    <p>No classes with the submitted subject</p>
+    {% endif %}
+</body>
+{% endblock %}
