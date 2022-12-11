@@ -1,0 +1,54 @@
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+
+<html>
+
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">SBFinder | </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'SBfinder:profile' user.username %}">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/sbfinder/classes">Search</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Calendar</a>
+              </li>
+                <li class = "nav-item">
+                    <a class = "nav-link" href = "{% url 'SBfinder:friend_request' %}"> Friend Request </a>
+                </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Log Out</a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </nav>
+ 
+
+    <body class="d-flex flex-column min-vh-100">
+        {% block content %}
+        <!-- Content Goes here -->
+        {% endblock content %}
+    </body>
+
+    
+    <!-- Footer padding top and bottom .5-->
+    <footer class="fixed-bottom pb-2 mt-auto bg-grey">
+        <div class="m-0 text-dark text-center ">Copyright &copy; Team B-10 | Yuanzhan, Dalia, Sarah, Ethan, Essam</div>
+    </footer>
+
+</html>
+
+

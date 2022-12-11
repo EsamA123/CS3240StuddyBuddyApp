@@ -1,0 +1,89 @@
+{% extends "SBfinder/base.html" %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <style>
+        .d-inline-flex{
+            gap:10px;
+            margin-bottom: 10px;
+            margin-left: 2px;
+        }
+
+        .nounderline {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+<div class="mb-0 col-md-12">
+    <h1 class="pt-3 text-center text-capitalize font-weight-bold">Welcome, {{ userInfo.user_name }}!</h1><br>
+</div>
+    <h5 class="text-center text-capitalize font-weight-bold">{{ userInfo.user_email }}</h5>
+
+<form action="{% url 'SBfinder:generate_SB'%}" method="POST">
+    {% csrf_token %}
+
+    <div class = "d-inline-flex ">
+        <h2 class="pt-2 text-left font-weight-bold">&emsp;Schedule</h2>
+        <input class="pt-1 mt-2 btn btn-secondary" type="submit" value="Generate Study Buddy" name = "generate_SB"/>
+    </div>
+
+    <div class="mx-auto" style="width: 1200px;">
+        {% for class in userInfo.course_set.all %}
+        <!--<form action="{% url 'SBfinder:delete_from_schedule' class.id%}" method="post">
+            {% csrf_token %}
+            -->
+            <div class="card left-align bg-light">
+                <div class="h4 card-header">
+                    {{ class.subject }} {{ class.catalog_number }}: {{ class.description }}
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            Instructor: {{ class.instructor.name }} <br>
+                            Section: {{ class.course_section }}-{{ class.component }} <br>
+                            Class Number: {{ class.course_number }}</br>
+
+                            <button type="button" class="pt-1 mt-2 btn btn-secondary">
+                        <a href=" {% url 'SBfinder:delete_from_schedule' class.id%} " class = "nounderline">Remove from schedule</a>
+                            </button><br>
+                            <!--<input class="pt-1 mt-2 btn btn-secondary" type="submit" value="Remove from Schedule" name = "remove_course"/><br>
+                            -->
+                            <div class = "d-inline-flex">
+                                <input type="checkbox" name = "checks" value = "{{ class }}">
+                                <h6 class="pt-2">Check this box if you would like to search for study buddies from this class: </h6>
+                            </div>
+                        </blockquote>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        <!--</form>-->
+
+    </div>
+
+</form>
+
+<!--<h4 class="pl-5 text-capitalize font-weight-bold">&ensp;Schedule </h4><br><br>-->
+
+<h4 class="pl-5 text-capitalize font-weight-bold">&ensp;Friends </h4>
+{% for friend in userInfo.friends.all %}
+<div class="card left-align bg-light">
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <h5>{{ friend.user_name }} </h5>
+        </blockquote>
+    </div>
+</div>
+{% endfor %}
+
+
+</body>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "SBfinder/base.html" %}
+{% load SBfinder_extra %}
+
+{% block content %}
+
+<head>
+    <style>
+        .nounderline {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 class="pt-2 text-center font-weight-bold">&emsp;Your Study Buddy List: </h2>
+
+    {% if SB_Dic|length == 0%}
+
+    <div class = "text-center">
+        <h1>You didn't select any class to add! :(</h1>
+    </div>
+
+    {% endif %}
+
+    {% for name, class in SB_Dic.items %}
+     <div class="card left-align bg-light">
+        <div class="h4 card-header">
+            User Name: {{ name|rangeAccess2:-1 }}<br>
+            User ID: {{ name|IndexAccess:-1 }}
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <h5>Relevant Classes: </h5>
+                    {% for classes in class %}
+                    <li>{{classes}}</li>
+                    {% endfor %}
+
+                     <!-- use tag function so that the result can be passed to the filter function below, see the
+                     SBfinder_extra.py file in templatetags for more information.-->
+                    {% accessLastElement name as UserID %}
+
+                    {% if user|checkAlreadyFriend:UserID == False %}
+                    <button type="button" class="pt-1 mt-2 btn btn-secondary">
+                        <a href="/sbfinder/send_friend_request/{{name|IndexAccess:-1}}/" class = "nounderline">Connect</a>
+                    </button>
+                    {% else %}
+                        <h5>The user is already a friend.</h5>
+                    {% endif %}
+
+
+                </blockquote>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+
+</body>
+{% endblock %}
