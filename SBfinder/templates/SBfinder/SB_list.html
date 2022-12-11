@@ -1,0 +1,112 @@
+{% extends "SBfinder/base.html" %}
+{% load SBfinder_extra %}
+
+{% block content %}
+
+<head>
+    <style>
+        .nounderline {
+            text-decoration: none;
+            color: white;
+        }
+        
+        .d-inline-flex{
+            gap:10px;
+            margin-bottom: 10px;
+            margin-left: 2px;
+        }
+
+        .nounderline {
+            text-decoration: none;
+            color: #026670;
+        }
+
+        .btn {
+        background-color: #95edd7;
+        color: #026670;
+        border: 2px solid #026670;
+        height: 40px;
+        }
+
+        .card {
+        flex-direction: row;
+        align-items: center;
+        }
+
+        .card img {
+        width: 25%;
+        }
+        .card-header {
+        background-color: #026670;
+        color: #edeae5;
+        }
+
+        .card-body {
+        background-color: #feffff;
+        }
+
+        h1{
+        font-size: 3.5em;
+        }
+
+        
+        h5{
+        color: #00bfd0;
+        }
+
+        .right{
+        float:right;
+        }
+
+        .left{
+        float:left;
+        padding: .5% 0;
+        }
+        </style>
+</head>
+<body>
+
+    <br><h1 class="pt-2 pb-4 text-center font-weight-bold">Your Study Buddy List </h1>
+
+    {% if SB_Dic|length == 0%}
+
+    <div class = "text-center">
+        <h3>You didn't select any class to add! :(</h3>
+    </div>
+
+    {% endif %}
+
+    {% for name, class in SB_Dic.items %}
+     <div class="card mx-auto" style="width: 45rem;">
+        <img src="https://cdn.iconscout.com/icon/free/png-256/user-1648810-1401302.png" class="card-img-top">
+
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+
+                    <h3 class = "text-capitalize">Username: {{ name|rangeAccess2:-1 }} (User ID: {{ name|IndexAccess:-1 }})</h3>
+                    
+                    <h4>You are both in: </h4>
+                    {% for classes in class %}
+                    <li>{{classes}}</li>
+                    {% endfor %}
+
+                     <!-- use tag function so that the result can be passed to the filter function below, see the
+                     SBfinder_extra.py file in templatetags for more information.-->
+                    {% accessLastElement name as UserID %}
+                    {% if user|checkAlreadyFriend:UserID == False %}
+                    <button type="button" class="pt-1 mt-2 btn btn-secondary">
+                        <a href="/sbfinder/send_friend_request/{{name|IndexAccess:-1}}/" class = "nounderline">Connect</a>
+                    </button>
+                    {% else %}
+                        <h5 class = "pt-2">The user is already a friend!</h5>
+                    {% endif %}
+
+                </blockquote>
+            </div>
+    </div>
+    <br>
+    {% endfor %}
+    
+
+</body>
+{% endblock %}
