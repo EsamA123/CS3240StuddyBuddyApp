@@ -1,0 +1,37 @@
+{% extends "SBfinder/base.html" %}
+
+{% block content %}
+
+<body>
+    <h1 class="pt-3 text-center text-capitalize font-weight-bold">{{ userInfo.user_name }} Profile </h1><br>
+
+    <h2 class="pt-2 font-weight-bold">&emsp;Schedule</h2>
+
+    <div class="mx-auto" style="width: 1200px;">
+    {% for class in userInfo.course_set.all %}
+    <form action="{% url 'SBfinder:delete_from_schedule' class.id%}" method="post">
+        {% csrf_token %}
+        
+        <div class="card left-align bg-light">
+            <div class="h4 card-header">
+                {{ class.subject }} {{ class.catalog_number }}: {{ class.description }}
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    Instructor: {{ class.instructor.name }} <br>
+                    Section: {{ class.course_section }}-{{ class.component }} <br>
+                    Class Number: {{ class.course_number }}</br>
+
+                    <input class="pt-1 mt-2 btn btn-secondary" type="submit" value="Remove from Schedule"/>
+                </blockquote>
+            </div>
+          </div> 
+        </form>
+    {% endfor %}
+    </div>
+
+    <h4 class="pl-5 text-capitalize font-weight-bold">&ensp;Schedule </h4><br><br>
+
+    <h4 class="pl-5 text-capitalize font-weight-bold">&ensp;Friends </h4>
+</body>
+
+{% endblock %}
