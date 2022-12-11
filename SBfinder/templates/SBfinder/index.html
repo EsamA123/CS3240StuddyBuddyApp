@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load socialaccount %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Buddy finder's Index Page</title>
+</head>
+<body>
+
+    <h1> {{user.username}}, Welcome to the study buddy finder app! </h1>
+    <a href =/logout>Logout</a>
+
+    {% block content %}
+        <div class = "container">
+          <br>
+          <h2 class = "text-center">Search for your desired class subject</h2>
+          <br>
+          <form method="GET">
+            <input type = "text" name = "subjSearch" placeholder="APMA, CS, etc ..." class = "text-center">
+            <input type = "text" name = "numSearch" placeholder="1010, 3240, etc ..." class = "text-center">
+            <button type = "submit">SEARCH CLASS</button>
+          </form>
+        </div>
+    {% endblock %}
+    <h2>List of classes</h2>
+    {% if test %}
+    {% for i in test %}
+    <strong>{{i}} ,</strong>
+    {% endfor %}
+    {% else %}
+    <p>No classes with the submitted subject</p>
+    {% endif %}
+</body>
+</html>
